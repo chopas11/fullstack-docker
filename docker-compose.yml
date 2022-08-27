@@ -1,0 +1,62 @@
+version: '3'
+
+services:
+  api:
+    build: ./api
+    # restart: unless-stopped
+    container_name: api_backend
+    # command: npm install
+    # command: npm run dev
+    volumes:
+      - ./api/:/app
+      - ./app/node_modules
+    ports:
+      - '4000:4000'
+    stdin_open: true
+    tty: true
+    depends_on:
+      - postgres
+
+  client:
+    build: ./client
+    container_name: client_frontend
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./client:/app
+      - ./app/node_modules
+    stdin_open: true
+    tty: true
+    depends_on:
+      - postgres
+
+  # Service for DBMS MYSQL
+  #  mysql:
+  #    image: mysql
+  #    container_name: db_mysql
+  #    # Mysql port 3306
+  #    ports:
+  #      - '3306:3306'
+  #    #
+  #    volumes:
+  #      - ./mysql_data:/var/lib/mysql
+  #    environment:
+  #      # MYSQL_ROOT_USER: root
+  #      MYSQL_ROOT_PASSWORD: sasha100
+  #      # MYSQL_DATABASE: mineral
+  #      MYSQL_USER: chopas
+  #      MYSQL_PASSWORD: SashaSasha100
+
+  # Service for Postgres
+  postgres:
+    image: postgres
+    container_name: db_postgres
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+      # Postgres port 5432
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres

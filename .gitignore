@@ -1,0 +1,5 @@
+mysql_data/
+postgres_data/
+client/node_modules
+api/node_modules
+docker-compose.yml.save
